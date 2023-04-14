@@ -5,21 +5,9 @@ pipeline {
         booleanParam(name: 'executeTests', defaultValue: true, description: '')
     }
     stages {
-        stage("init") {
+        stage("build") {
             steps {
-                script {
-                    gv = load "script.groovy"
-                }
-            }
-        }
-        stage("Checkout") {
-            steps {
-                checkout scm
-            }
-        }
-        stage("Build") {
-            steps {
-                sh 'docker-compose build web'
+                echo 'building the applicaiton...'
             }
         }
         stage("test") {
@@ -29,14 +17,13 @@ pipeline {
                 }
             }
             steps {
-                script {
-                    gv.testApp()
-                }
+                echo 'testing the applicaiton...'
             }
         }
         stage("deploy") {
             steps {
-                sh "docker-compose up -d"
+                echo 'deploying the applicaiton...'
+                echo "deploying version ${params.VERSION}"
             }
         }
     }
